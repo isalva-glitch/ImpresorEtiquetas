@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Impresor Etiquetas ZPL</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <h1>Impresor de Etiquetas Zebra</h1>
+        <p>Completa los datos, genera el preview y envía a impresión.</p>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Formulario</h2>
+          <form id="label-form" novalidate>
+            <div class="field">
+              <label for="cliente">Cliente</label>
+              <input id="cliente" name="cliente" type="text" />
+              <small class="error" data-error-for="cliente"></small>
+            </div>
+
+            <div class="field">
+              <label for="pedido">Nro Pedido</label>
+              <input id="pedido" name="pedido" type="text" />
+              <small class="error" data-error-for="pedido"></small>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="ancho">Ancho (mm)</label>
+                <input id="ancho" name="ancho" type="number" step="1" min="1" />
+                <small class="error" data-error-for="ancho"></small>
+              </div>
+
+              <div class="field">
+                <label for="alto">Alto (mm)</label>
+                <input id="alto" name="alto" type="number" step="1" min="1" />
+                <small class="error" data-error-for="alto"></small>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="descripcion">Descripción del vidrio</label>
+              <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+              <small class="error" data-error-for="descripcion"></small>
+            </div>
+
+            <div class="actions">
+              <button id="btn-preview" type="button">Generar preview</button>
+              <button id="btn-print" type="button" class="primary">Imprimir</button>
+              <button id="btn-clear" type="button" class="ghost">Limpiar</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="card">
+          <div class="panel-header">
+            <h2>Preview ZPL</h2>
+            <button id="btn-copy" type="button" class="ghost">Copiar</button>
+          </div>
+          <textarea id="preview" class="mono" rows="14" readonly></textarea>
+
+          <h3>Log de impresión</h3>
+          <pre id="log" class="log">Sin actividad.</pre>
+        </article>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
