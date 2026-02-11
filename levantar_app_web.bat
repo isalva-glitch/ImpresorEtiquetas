@@ -33,14 +33,21 @@ if not defined PY_CMD (
 )
 
 if not defined PY_CMD (
-  echo ERROR: No se encontró una instalación funcional de Python.
-  echo Sugerencia: instala Python 3.10+ desde python.org y marca "Add Python to PATH".
-  echo Si aparece el mensaje de Microsoft Store, desactiva el alias de "python.exe" en:
-  echo Configuración ^> Aplicaciones ^> Configuración avanzada de aplicaciones ^> Alias de ejecución.
+  echo ERROR: No working Python interpreter was found.
+  echo Install Python 3.10+ from python.org and enable "Add Python to PATH".
+  echo If Windows redirects to Microsoft Store, disable app execution alias for python.exe in:
+  echo Settings ^> Apps ^> Advanced app settings ^> App execution aliases
   pause
   exit /b 1
 )
 
+echo Python command: %PY_CMD%
+
+echo [2/6] Creating virtual environment if needed...
+if not exist ".venv\Scripts\python.exe" (
+  %PY_CMD% -m venv .venv
+  if not %errorlevel%==0 (
+    echo ERROR: Failed to create .venv
 echo Python detectado: %PY_CMD%
 
 echo [2/5] Creando entorno virtual (.venv) si no existe...

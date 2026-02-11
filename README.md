@@ -22,14 +22,17 @@ Abrir en Chrome:
 
 
 ## Inicio rapido en Windows (.bat)
-También podés levantar todo con doble click en:
+Tambien podes levantar todo con doble click en:
 - `levantar_app_web.bat`
 
-Este script:
-1. Detecta Python funcional (prioriza `py -3` para evitar el alias de Microsoft Store)
-2. Crea `.venv` si no existe
-3. Instala dependencias desde `requirements.txt`
-4. Abre Chrome en `http://127.0.0.1:5000` y ejecuta `server.py`
+Este script ahora es mas robusto:
+1. Detecta Python funcional (primero `py -3`, luego `python`).
+2. Crea `.venv` si no existe.
+3. Instala dependencias usando directamente `.venv\Scripts\python.exe -m pip`.
+4. Abre el navegador por defecto en `http://127.0.0.1:5000`.
+5. Inicia `server.py` con el Python del entorno virtual.
+
+Si Windows redirige `python` al Microsoft Store, el script muestra pasos para desactivar ese alias.
 
 ## Endpoints
 - `POST /api/preview`: valida campos y devuelve `zpl` final.
@@ -55,8 +58,8 @@ pytest -q
 ```
 
 ### Error frecuente en Windows (alias de Microsoft Store)
-Si ves un mensaje como "no se encontró Python; ejecutar sin argumentos para instalar desde Microsoft Store", desactiva el alias de ejecución de `python.exe` en:
+Si ves un mensaje como "Python was not found" o redireccion a Microsoft Store, desactiva el alias de `python.exe` en:
 
-`Configuración > Aplicaciones > Configuración avanzada de aplicaciones > Alias de ejecución de aplicaciones`
+`Settings > Apps > Advanced app settings > App execution aliases`
 
-El `.bat` nuevo intenta evitar este problema usando `py -3` primero.
+Luego vuelve a ejecutar `levantar_app_web.bat`.
