@@ -26,7 +26,7 @@ También podés levantar todo con doble click en:
 - `levantar_app_web.bat`
 
 Este script:
-1. Verifica Python en PATH
+1. Detecta Python funcional (prioriza `py -3` para evitar el alias de Microsoft Store)
 2. Crea `.venv` si no existe
 3. Instala dependencias desde `requirements.txt`
 4. Abre Chrome en `http://127.0.0.1:5000` y ejecuta `server.py`
@@ -53,3 +53,10 @@ cmd /c "net use \\10.0.0.1\ZebraS600 && copy /b C:\prueba_etiqueta.txt \\10.0.0.
 python -m py_compile server.py
 pytest -q
 ```
+
+### Error frecuente en Windows (alias de Microsoft Store)
+Si ves un mensaje como "no se encontró Python; ejecutar sin argumentos para instalar desde Microsoft Store", desactiva el alias de ejecución de `python.exe` en:
+
+`Configuración > Aplicaciones > Configuración avanzada de aplicaciones > Alias de ejecución de aplicaciones`
+
+El `.bat` nuevo intenta evitar este problema usando `py -3` primero.
