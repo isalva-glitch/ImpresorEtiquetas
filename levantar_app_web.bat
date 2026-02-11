@@ -1,29 +1,34 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
+chcp 65001 >nul
 
-REM Go to script directory
+REM Ir al directorio donde está este .bat
 cd /d "%~dp0"
 
 echo ==========================================
-echo   ImpresorEtiquetas - Startup helper
+echo   ImpresorEtiquetas - Inicio automatico
 echo ==========================================
 
-echo [1/6] Detecting a working Python interpreter...
+echo [1/5] Detectando interprete de Python...
 set "PY_CMD="
 
-REM First try Python Launcher (usually avoids Microsoft Store alias issues)
+REM Prioridad 1: py launcher (evita el alias de Microsoft Store)
 where py >nul 2>&1
-if %errorlevel%==0 (
+if not errorlevel 1 (
   py -3 -c "import sys" >nul 2>&1
-  if %errorlevel%==0 set "PY_CMD=py -3"
+  if not errorlevel 1 (
+    set "PY_CMD=py -3"
+  )
 )
 
-REM Fallback to python in PATH
+REM Prioridad 2: python en PATH
 if not defined PY_CMD (
   where python >nul 2>&1
-  if %errorlevel%==0 (
+  if not errorlevel 1 (
     python -c "import sys" >nul 2>&1
-    if %errorlevel%==0 set "PY_CMD=python"
+    if not errorlevel 1 (
+      set "PY_CMD=python"
+    )
   )
 )
 
@@ -43,36 +48,38 @@ if not exist ".venv\Scripts\python.exe" (
   %PY_CMD% -m venv .venv
   if not %errorlevel%==0 (
     echo ERROR: Failed to create .venv
+echo Python detectado: %PY_CMD%
+
+echo [2/5] Creando entorno virtual (.venv) si no existe...
+if not exist ".venv\Scripts\python.exe" (
+  %PY_CMD% -m venv .venv
+  if errorlevel 1 (
+    echo ERROR: No se pudo crear el entorno virtual.
     pause
     exit /b 1
   )
 )
 
-set "VENV_PY=.venv\Scripts\python.exe"
-set "VENV_PIP=.venv\Scripts\pip.exe"
-
-if not exist "%VENV_PY%" (
-  echo ERROR: Virtual env python not found at %VENV_PY%
+echo [3/5] Activando entorno virtual...
+call ".venv\Scripts\activate.bat"
+if errorlevel 1 (
+  echo ERROR: No se pudo activar el entorno virtual.
   pause
   exit /b 1
 )
 
-echo [3/6] Ensuring pip is available in virtual env...
-"%VENV_PY%" -m ensurepip --upgrade >nul 2>&1
-
-echo [4/6] Installing dependencies (requirements.txt)...
-"%VENV_PY%" -m pip install -r requirements.txt
-if not %errorlevel%==0 (
-  echo ERROR: Dependency installation failed.
-  echo Check internet/proxy and try again.
+echo [4/5] Instalando/actualizando dependencias...
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+if errorlevel 1 (
+  echo ERROR: Falló la instalación de dependencias.
+  echo Revisa conexión a internet/proxy y volvé a intentar.
   pause
   exit /b 1
 )
 
-echo [5/6] Opening browser...
-start "" "http://127.0.0.1:5000"
-
-echo [6/6] Starting local server...
-"%VENV_PY%" server.py
+echo [5/5] Iniciando servidor y abriendo Chrome...
+start "Chrome" "chrome" "http://127.0.0.1:5000"
+python server.py
 
 endlocal
