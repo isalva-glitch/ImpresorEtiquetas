@@ -20,6 +20,17 @@ python server.py
 Abrir en Chrome:
 - http://127.0.0.1:5000
 
+
+## Inicio rapido en Windows (.bat)
+También podés levantar todo con doble click en:
+- `levantar_app_web.bat`
+
+Este script:
+1. Verifica Python en PATH
+2. Crea `.venv` si no existe
+3. Instala dependencias desde `requirements.txt`
+4. Abre Chrome en `http://127.0.0.1:5000` y ejecuta `server.py`
+
 ## Endpoints
 - `POST /api/preview`: valida campos y devuelve `zpl` final.
 - `POST /api/print`: valida, genera ZPL, guarda en `C:\prueba_etiqueta.txt`, ejecuta comando de impresión y devuelve `returncode/stdout/stderr`.
