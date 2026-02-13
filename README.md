@@ -25,14 +25,14 @@ Abrir en Chrome:
 Tambien podes levantar todo con doble click en:
 - `levantar_app_web.bat`
 
-Este script ahora es mas robusto:
-1. Detecta Python funcional con cinco estrategias: `py -3`, `python` en PATH, rutas comunes, accesos directos del Start Menu y carga manual de ruta (`python.exe`, carpeta o `.lnk`).
-2. Crea `.venv` si no existe.
-3. Instala dependencias usando directamente `.venv\Scripts\python.exe -m pip`.
-4. Abre el navegador por defecto en `http://127.0.0.1:5000`.
-5. Inicia `server.py` con el Python del entorno virtual.
+Script simplificado:
+1. Usa `PYTHON_EXE` (ruta fija editable dentro del `.bat`) como primera opcion.
+2. Si no existe, intenta `py -3` y luego `python` en PATH.
+3. Crea `.venv` si no existe.
+4. Instala dependencias con `.venv\Scripts\python.exe -m pip install -r requirements.txt`.
+5. Abre `http://127.0.0.1:5000` e inicia `server.py`.
 
-Si Windows redirige `python` al Microsoft Store, el script muestra pasos para desactivar ese alias.
+Si tu Python no esta en la ruta por defecto, edita la variable `PYTHON_EXE` al inicio del `.bat`.
 
 ## Endpoints
 - `POST /api/preview`: valida campos y devuelve `zpl` final.
@@ -65,4 +65,3 @@ Si ves un mensaje como "Python was not found" o redireccion a Microsoft Store, d
 Luego vuelve a ejecutar `levantar_app_web.bat`.
 
 
-Tip: si tenes una ruta como `C:\Users\windows\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Python\Python 3.14`, el `.bat` ahora la interpreta automaticamente (resuelve accesos directos `.lnk`).
