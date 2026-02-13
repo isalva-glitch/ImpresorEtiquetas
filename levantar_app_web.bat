@@ -38,12 +38,15 @@ if not defined PY_MODE (
 REM Opcion C: rutas comunes de instalacion
 if not defined PY_MODE (
   for %%P in (
+    "%LocalAppData%\Programs\Python\Python313\python.exe"
     "%LocalAppData%\Programs\Python\Python312\python.exe"
     "%LocalAppData%\Programs\Python\Python311\python.exe"
     "%LocalAppData%\Programs\Python\Python310\python.exe"
+    "%ProgramFiles%\Python313\python.exe"
     "%ProgramFiles%\Python312\python.exe"
     "%ProgramFiles%\Python311\python.exe"
     "%ProgramFiles%\Python310\python.exe"
+    "%ProgramFiles(x86)%\Python313\python.exe"
     "%ProgramFiles(x86)%\Python312\python.exe"
     "%ProgramFiles(x86)%\Python311\python.exe"
     "%ProgramFiles(x86)%\Python310\python.exe"
@@ -55,6 +58,30 @@ if not defined PY_MODE (
         set "PY_EXE=%%~P"
         goto :python_found
       )
+    )
+  )
+)
+
+REM Opcion D: ingreso manual de ruta a python.exe
+if not defined PY_MODE (
+  echo.
+  echo No se pudo detectar Python automaticamente.
+  echo Si lo tenes instalado, pega la ruta completa de python.exe
+  echo Ejemplo: C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python311\python.exe
+  set /p "MANUAL_PY=Ruta de python.exe (ENTER para cancelar): "
+
+  if defined MANUAL_PY (
+    if exist "!MANUAL_PY!" (
+      "!MANUAL_PY!" -c "import sys" >nul 2>&1
+      if not errorlevel 1 (
+        set "PY_MODE=EXE"
+        set "PY_EXE=!MANUAL_PY!"
+        goto :python_found
+      ) else (
+        echo ERROR: La ruta indicada no parece ser un Python funcional.
+      )
+    ) else (
+      echo ERROR: La ruta indicada no existe.
     )
   )
 )

@@ -26,7 +26,7 @@ Tambien podes levantar todo con doble click en:
 - `levantar_app_web.bat`
 
 Este script ahora es mas robusto:
-1. Detecta Python funcional con tres estrategias: `py -3`, `python` en PATH y rutas comunes de instalacion.
+1. Detecta Python funcional con cuatro estrategias: `py -3`, `python` en PATH, rutas comunes de instalacion y carga manual de ruta a `python.exe`.
 2. Crea `.venv` si no existe.
 3. Instala dependencias usando directamente `.venv\Scripts\python.exe -m pip`.
 4. Abre el navegador por defecto en `http://127.0.0.1:5000`.
